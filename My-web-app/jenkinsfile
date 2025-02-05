@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    environment {
+        // Set environment variables, if any
+        NODE_HOME = tool name: 'NodeJS', type: 'NodeJS'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from GitHub
+                git 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Install dependencies
+                sh 'npm install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests (if you have tests)
+                sh 'npm test'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the application (if necessary)
+                sh 'npm run build'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy the application (could be to any environment)
+                echo 'Deploying to production server'
+                // Example: scp, rsync, or any deploy commands
+            }
+        }
+    }
+
+    post {
+        always {
+            // Cleanup or notifications
+            echo 'Pipeline completed'
+        }
+        success {
+            echo 'Pipeline succeeded'
+        }
+        failure {
+            echo 'Pipeline failed'
+        }
+    }
+}
